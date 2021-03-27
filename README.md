@@ -1,5 +1,5 @@
 # REVSim
- Revsim is a simple program which allows the user to test and create Representative Elementary Volume curves, or REV's.
+ Revsim is an interactive tool which allows a user to generate, input, test and create Representative Elementary Volume curves, or REV's.
 
 Below is an example of a randomly generated array, an array of values (in the example below 0,1 or 2) rendered in a 100x100 grid.
 
