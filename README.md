@@ -5,7 +5,7 @@ Below is an example of a randomly generated array, an array of values (in the ex
 
 ![arrayimage](https://github.com/JBallGeo/REVSim/blob/main/images/randgrid.png)
 
-We can sample this grid, to produce a plot of the samples, in this example we produce a simple moving average of a single sample, averaging the values as we increase the number of iterations. There is a cleare trend in the data towards the system mean which we have measured from the grid above.
+We can sample this grid, to produce a plot of the samples, in this example we produce a simple moving average of a single sample, averaging the values as we increase the number of iterations. There is a clear trend in the data towards the system mean which we have measured from the grid above.
 
 ![revsma](https://github.com/JBallGeo/REVSim/blob/main/images/revsma.png)
 
