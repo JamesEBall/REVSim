@@ -151,7 +151,7 @@ class grid:
             plt.xlim([1,iterations])
             plt.ylim([0,self.params-1])
             plt.xlabel('Iterations')
-            plt.ylabel('Measured value')
+            plt.ylabel('Measured property')
 
 
             print('Input parameters:')
@@ -210,7 +210,7 @@ class grid:
             plt.xlim([1,iterations])
             plt.ylim([0,self.params-1])
             plt.xlabel('Iterations')
-            plt.ylabel('Measured value')
+            plt.ylabel('Measured property')
             
             return plt.show(block=False)
 
