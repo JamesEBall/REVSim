@@ -26,6 +26,12 @@ class grid:
         self.norm = []
         img = []
 
+
+    def input(self, inputdata):
+        self.array = inputdata
+        self.x = inputdata[1]
+        slef.y = inputdata[0]
+
     def update(self):
         return plt.imshow(self.array,interpolation='nearest',
                                 cmap = self.cmap,norm=self.norm
