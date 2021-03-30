@@ -27,10 +27,11 @@ class grid:
         img = []
 
 
-    def input(self, inputdata):
+    def input(self, inputdata, params):
         self.array = inputdata
         self.x = inputdata[1]
-        slef.y = inputdata[0]
+        self.y = inputdata[0]
+        self.params = params
 
     def update(self):
         return plt.imshow(self.array,interpolation='nearest',
