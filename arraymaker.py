@@ -1,6 +1,3 @@
-# To add a new cell, type '# %%'
-# To add a new markdown cell, type '# %% [markdown]'
-# %%
 import numpy as np
 import matplotlib as mpl
 import matplotlib.pyplot as plt
