@@ -121,6 +121,7 @@ class grid:
         #variables
         iterations = len(self.graphdata[0])
         numruns = len(self.graphdata)
+
         #creates moving adverages of data
         def movavg():
             def mov_avg(x, w):
@@ -171,26 +172,22 @@ class grid:
         #minmax plot
         def minmax():
 
-            
-            def max(df):
-                x = df['iteration']
+            #checks to see if minmax values have been generated, if not creates them.
+            is_local = "minmaxdf" in locals()
+            if is_local == True:
+                return
+            else:
+                #creates new dataframe with max and min variables in.
+                minmaxdf = pd.DataFrame()
+                minmaxdf['iteration'] = df['iteration']
                 del df['iteration']
-                df['Max'] = df.max(axis=1)
-                df['iteration'] = x
+                minmaxdf['Max'] = df.max(axis=1)
+                minmaxdf['Min'] = df.min(axis=1)
+                df['iteration'] = minmaxdf['iteration']
 
-            def min(df):
-                x = df['iteration']
-                del df['iteration']
-                df['Min'] = df.min(axis=1)
-                df['iteration'] = x
-
-            x = df['iteration']
-
-            max(df)
-            min(df)
-
-            max1 = df['Max']
-            min1 = df['Min']
+            max1 = minmaxdf['Max']
+            min1 = minmaxdf['Min']
+            x = minmaxdf['iteration']
 
             ymax = max1.values.tolist()
             ymin = min1.values.tolist()
@@ -222,12 +219,55 @@ class grid:
             return plt.show(block=False)
 
 
+        #max min difference
+        def minmax_curve():
+            #checks to see if minmax values have been generated, if not creates them.
+            is_local = "minmaxdf" in locals()
+            if is_local == True:
+                return
+            else:
+                #creates new dataframe with max and min variables in.
+                minmaxdf = pd.DataFrame()
+                minmaxdf['iteration'] = df['iteration']
+                del df['iteration']
+                minmaxdf['Max'] = df.max(axis=1)
+                minmaxdf['Min'] = df.min(axis=1)
+                df['iteration'] = minmaxdf['iteration']
+            
+            #set x axis 
+            x = minmaxdf['iteration']
+
+            plt.plot(x, minmaxdf['Max'] - minmaxdf['Min'])
+            plt.xlim([1,iterations])
+            plt.ylim([0,self.params-1])
+            plt.xlabel('Iterations')
+            plt.ylabel('Max/min iter. difference')
+
+
+        #standard deviation of each iteration
+        def stdev():
+
+            for iteration in range(0,iterations):
+                standarddev = np.std(df.loc[iteration])
+                plt.plot(standarddev)
+    
+            plt.xlim([1,iterations])
+            plt.ylim([0,self.params-1])
+            plt.xlabel('Iterations')
+            plt.ylabel('Standard Deviation')
+
+            return plt.show(block=False)
+
 
 
         if type == 'sphagetti':
             return sphagetti()
         elif type == 'minmax': #sphagetti must be plotted before minmax
             return minmax()
+        elif type == 'minmax_curve': 
+            return minmax_curve()
+        elif type == 'stdev': #sphagetti must be plotted before stdev
+            return stdev()
         else:
             return ('Error: no valid type selected')
 
