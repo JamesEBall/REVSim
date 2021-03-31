@@ -4,9 +4,13 @@ import matplotlib.pyplot as plt
 import pylab
 import time 
 import pandas as pd
-from random import randrange
 import statistics
+import math
 from scipy.interpolate import UnivariateSpline
+from random import randrange
+
+import seaborn as sns
+sns.set()
 
 class grid:
 
@@ -22,6 +26,7 @@ class grid:
         self.cmap = []
         self.norm = []
         img = []
+        
 
 
     def input(self, inputdata, params):
@@ -135,7 +140,7 @@ class grid:
             for n in range(0,iterations):
                 x.append(n+1)
 
-            df['iteration'] = x #x value for graph
+            self.iterations = x #x value for graph
 
             for run in range(0,numruns):
                 y = [val for sublist in self.graphdata[run] for val in sublist]
@@ -151,7 +156,7 @@ class grid:
 
             #plot moving avergdge data from dataframe
             for run in range(0,numruns):
-                plt.plot(df['iteration'],df['SMA' + str(run)])
+                plt.plot(self.iterations,df['SMA' + str(run)])
 
             plt.xlim([1,iterations])
             plt.ylim([0,self.params-1])
@@ -176,11 +181,11 @@ class grid:
             else:
                 #creates new dataframe with max and min variables in.
                 minmaxdf = pd.DataFrame()
-                minmaxdf['iteration'] = df['iteration']
-                del df['iteration']
+                minmaxdf['iteration'] = self.iterations
+                del self.iterations
                 minmaxdf['Max'] = df.max(axis=1)
                 minmaxdf['Min'] = df.min(axis=1)
-                df['iteration'] = minmaxdf['iteration']
+                self.iterations = minmaxdf['iteration']
 
             max1 = minmaxdf['Max']
             min1 = minmaxdf['Min']
@@ -225,11 +230,9 @@ class grid:
             else:
                 #creates new dataframe with max and min variables in.
                 minmaxdf = pd.DataFrame()
-                minmaxdf['iteration'] = df['iteration']
-                del df['iteration']
+                minmaxdf['iteration'] = self.iterations
                 minmaxdf['Max'] = df.max(axis=1)
                 minmaxdf['Min'] = df.min(axis=1)
-                df['iteration'] = minmaxdf['iteration']
             
             #set x axis 
             x = minmaxdf['iteration']
@@ -239,21 +242,47 @@ class grid:
             plt.ylim([0,self.params-1])
             plt.xlabel('Iterations')
             plt.ylabel('Max/min iter. difference')
+            return plt.show(block=False)
 
 
         #standard deviation of each iteration
         def stdev():
+            #checks to see if minmax values have been generated, if not creates them.
+            is_local = "minmaxdf" in locals()
+            if is_local == True:
+                return
+            else:
+                #creates new dataframe with max and min variables in.
+                minmaxdf = pd.DataFrame()
+                minmaxdf['iteration'] = self.iterations
+                minmaxdf['Max'] = df.max(axis=1)
+                minmaxdf['Min'] = df.min(axis=1)
+            
+            e = []
+            y = []
+            epos = []
+            eneg = []
 
-            for iteration in range(0,iterations):
-                standarddev = np.std(df.loc[iteration])
-                plt.plot(standarddev)
-    
-            plt.xlim([1,iterations])
-            plt.ylim([0,self.params-1])
+            for row in range(0,len(self.iterations)):
+                values = df.loc[row]
+                values = list(values)
+                dev = statistics.stdev(values,self.mean)
+                e.append(dev/2)
+                y.append(statistics.mean(list(values))) #mean
+                epos.append(statistics.mean(list(values))+(dev/2)) #for graph
+                eneg.append(statistics.mean(list(values))-(dev/2))
+
+            x = self.iterations
+
+            plt.plot(x, y)
+            #plt.plot(x, epos)
+            #plt.plot(x, eneg)
+            plt.fill_between(x, epos, eneg,color='gray', alpha=0.2)
+            plt.xlim(1, len(x))
             plt.xlabel('Iterations')
             plt.ylabel('Standard Deviation')
 
-            return plt.show(block=False)
+
 
 
 
